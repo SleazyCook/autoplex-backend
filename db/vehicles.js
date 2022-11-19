@@ -12,15 +12,16 @@ async function createVehicle({
   VIN,
   stockNumber,
   retailPrice,
-  featured,
-  active
+  inStock,
+  isFeatured,
+  isActive,
 }) {
   try {
     const { rows: [ vehicle ] } = await client.query(`
-      INSERT INTO vehicles(make, model, submodel, engine, year, "exteriorColor", "interiorColor", mileage, "VIN", "stockNumber", "retailPrice", featured, active)
-      VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+      INSERT INTO vehicles(make, model, submodel, engine, year, "exteriorColor", "interiorColor", mileage, "VIN", "stockNumber", "retailPrice", "inStock", "isFeatured", "isActive")
+      VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
       RETURNING *;
-    `, [make, model, submodel, engine, year, exteriorColor, interiorColor, mileage, VIN, stockNumber, retailPrice, featured, active]);
+    `, [make, model, submodel, engine, year, exteriorColor, interiorColor, mileage, VIN, stockNumber, retailPrice, inStock, isFeatured, isActive]);
 
     return vehicle;
 
@@ -28,6 +29,8 @@ async function createVehicle({
     throw error;
   }
 }
+// photos on their own tables ()
+// MATERIALIZE UI - carousel photos, or MUI
 
 async function updateVehicle(id, fields = {}) {
   const setString = Object.keys(fields).map(

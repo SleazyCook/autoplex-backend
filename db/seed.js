@@ -10,11 +10,26 @@ const {
 } = require('./users');
 
 const {
+  createTypes,
+  updateType,
+  getAllTypes,
+  getTypesById
+} = require('./types')
+
+const {
   createVehicle,
   updateVehicle,
   getAllVehicles,
   getVehicleById
 } = require('./vehicles')
+
+// const {
+
+// } = require('./photos')
+
+// const {
+
+// } = require('./reviews')
 
 async function dropTables(){
   console.log("WE ABOUT TO DROP THIS SHIIIIIIIIIIIIIIT");
@@ -42,6 +57,7 @@ async function createTables(){
     );
     CREATE TABLE vehicles(
       id SERIAL PRIMARY KEY,
+      "typeId" INTEGER REFERENCES types(id)
       make VARCHAR(255) NOT NULL,
       model VARCHAR(255) NOT NULL,
       submodel VARCHAR(255),
@@ -53,8 +69,9 @@ async function createTables(){
       "VIN" VARCHAR(255),
       "stockNumber" VARCHAR(255),
       "retailPrice" VARCHAR(255),
-      featured BOOLEAN DEFAULT FALSE,
-      active BOOLEAN DEFAULT FALSE
+      "inStock" BOOELAN DEFAULT FALSE,
+      "isFeatured" BOOLEAN DEFAULT FALSE,
+      "isActive" BOOLEAN DEFAULT FALSE,
     );
     CREATE TABLE reviews(
       id SERIAL PRIMARY KEY,
@@ -98,8 +115,8 @@ async function createInitialVehicles(){
       VIN: '12341234123412341',
       stockNumber: '1234123412341',
       retailPrice: '$20,000',
-      featured: true,
-      active: true
+      isFeatured: true,
+      isActive: true
     })
     const ianCar = await createVehicle({
       make: 'Toyota',
@@ -113,8 +130,8 @@ async function createInitialVehicles(){
       VIN: '14321432143214321',
       stockNumber: '987654321123',
       retailPrice: '$4,000',
-      featured: false,
-      active: false
+      isFeatured: false,
+      isActive: false
     })
     console.log(drewCar)
     console.log(ianCar)
