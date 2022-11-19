@@ -1,11 +1,11 @@
 const { client } = require('.');
 
-async function createTypes({
+async function createType({
   vehicleType
 }) {
   try {
     const { rows: [type] } = await client.query(`
-    INSERT INTO types("vehicleType)
+    INSERT INTO types("vehicleType")
     VALUES ($1)
     RETURNING *;
   ` [vehicleType]);
@@ -74,7 +74,7 @@ async function getTypesById(typeId) {
 }
 
 module.exports = {
-  createTypes,
+  createType,
   updateType,
   getAllTypes,
   getTypesById

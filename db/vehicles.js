@@ -1,6 +1,7 @@
 const { client } = require('.');
 
 async function createVehicle({
+  typeId,
   make,
   model,
   submodel,
@@ -18,10 +19,10 @@ async function createVehicle({
 }) {
   try {
     const { rows: [ vehicle ] } = await client.query(`
-      INSERT INTO vehicles(make, model, submodel, engine, year, "exteriorColor", "interiorColor", mileage, "VIN", "stockNumber", "retailPrice", "inStock", "isFeatured", "isActive")
-      VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+      INSERT INTO vehicles("typeId", make, model, submodel, engine, year, "exteriorColor", "interiorColor", mileage, "VIN", "stockNumber", "retailPrice", "inStock", "isFeatured", "isActive")
+      VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
       RETURNING *;
-    `, [make, model, submodel, engine, year, exteriorColor, interiorColor, mileage, VIN, stockNumber, retailPrice, inStock, isFeatured, isActive]);
+    `, [typeId, make, model, submodel, engine, year, exteriorColor, interiorColor, mileage, VIN, stockNumber, retailPrice, inStock, isFeatured, isActive]);
 
     return vehicle;
 
@@ -78,7 +79,7 @@ async function getVehicleById(vehicleId) {
     if (!vehicles) {
       throw {
         name: "VehicleNotFoundError",
-        message: "Coule not find a vehicle with that vehicleId"
+        message: "Could not find a vehicle with that vehicleId"
       };
     }
     console.log('vehicles get by id', vehicles)
