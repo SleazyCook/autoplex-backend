@@ -1,16 +1,17 @@
 const { client } = require('.');
 
 async function createPhoto({
+  vehicleId,
   alt,
   url,
   isActive
 }) {
   try {
     const { rows: [ photo ] } = await client.query(`
-      INSERT INTO photos(alt, url, "isActive")
-      VALUES($1, $2, $3)
+      INSERT INTO photos("vehicleId", alt, url, "isActive")
+      VALUES($1, $2, $3, $4)
       RETURNING *;
-    `, [alt, url, isActive]);
+    `, [vehicleId, alt, url, isActive]);
 
     return photo;
   } catch (error) {

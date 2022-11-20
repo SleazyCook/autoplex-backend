@@ -41,11 +41,11 @@ async function dropTables(){
   console.log("WE ABOUT TO DROP THIS SHIIIIIIIIIIIIIIT");
   try {
     await client.query(`
-    DROP TABLE IF EXISTS users;
     DROP TABLE IF EXISTS photos;
     DROP TABLE IF EXISTS vehicles;
     DROP TABLE IF EXISTS types;
     DROP TABLE IF EXISTS reviews;
+    DROP TABLE IF EXISTS users;
     `);
     console.log("Finished dropping tables");
   } catch (error) {
@@ -87,16 +87,18 @@ async function createTables(){
     );
     CREATE TABLE photos(
       id SERIAL PRIMARY KEY,
+      "vehicleId" INTEGER REFERENCES vehicles(id),
       alt VARCHAR(255),
       url VARCHAR(255),
       "isActive" BOOLEAN DEFAULT FALSE
     );
     CREATE TABLE reviews(
       id SERIAL PRIMARY KEY,
-      customer VARCHAR(255),
+      name VARCHAR(255),
       quote TEXT,
       "imgAlt" VARCHAR(255),
-      "imgUrl" VARCHAR(255)
+      "imgUrl" VARCHAR(255),
+      "isActive" VARCHAR(255)
     );
     `)
       console.log('Successfully created Tables')
@@ -183,13 +185,26 @@ async function createInitialVehicles(){
 async function createInitialReviews() {
   try {
     console.log("Beginning to createInitialReviews");
-    const drewCook = await createReview({customer: 'drewford', quote: 'I like it a lot', imgAlt: 'a beautiful man', imgUrl: 'asdfasdfasdf' });
-    const tessDlV = await createReview({customer: 'tessa', quote: 'I just work here', imgAlt: 'a great employee', imgUrl: 'asdfasdfasdfasdfasdf'});
+    const drewCook = await createReview({name: 'drewford', quote: 'I like it a lot', imgAlt: 'a beautiful man', imgUrl: 'asdfasdfasdf', isActive: true });
+    const tessDlV = await createReview({name: 'tessa', quote: 'I just work here', imgAlt: 'a great employee', imgUrl: 'asdfasdfasdfasdfasdf', isActive: true});
     console.log(drewCook);
     console.log(tessDlV);
     console.log('finished creatingInitialReviews');
   } catch (error) {
     console.log(error)
+  }
+}
+
+async function createInitialPhotos() {
+  try{
+    console.log("beginning to createInitialPhotos");
+    const logo = await createPhoto({vehicleId: 1, alt: "civic-front", url: "https://i.imgur.com/WWvB4QC.png", isActive: true});
+    const background = await createPhoto({vehicleId: 1, alt: "civic-interior", url: "https://i.imgur.com/5crjtOr.png", isActive: true});
+    console.log(logo);
+    console.log(background);
+    console.log("finished creating InitialPhotos");
+  } catch (error) {
+    console.log(error);
   }
 }
 
@@ -206,6 +221,7 @@ async function rebuildDB(){
   await createInitialTypes();
   await createInitialVehicles();
   await createInitialReviews();
+  await createInitialPhotos();
   await testDB();
   client.end();
 }

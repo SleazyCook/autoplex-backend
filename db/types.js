@@ -1,16 +1,17 @@
 const { client } = require('.');
 
 async function createType({
-  vehicleType
+  vehicleType,
 }) {
   try {
     const { rows: [type] } = await client.query(`
     INSERT INTO types("vehicleType")
     VALUES ($1)
     RETURNING *;
-  ` [vehicleType]);
+  `, [vehicleType]);
 
     return type;
+    
   } catch (error) {
     console.log(error);
   }

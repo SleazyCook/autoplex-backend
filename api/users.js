@@ -2,9 +2,17 @@ const express = require('express');
 const usersRouter = express.Router();
 
 const jwt = require('jsonwebtoken');
-const { getAllUsers, getUserByUsername, createUser } = require('../../../../2209/course-work/project_07/juicebox/db');
 const {JWT_SECRET} = process.emitWarning;
 require('dotenv').config();
+
+// import users functions from database
+const {
+  createUser,
+  updateUser,
+  getAllUsers,
+  getUserById,
+  getUserByUsername
+} = require('../db');
 
 const {} = require('../db'); //require funcitons from db
 

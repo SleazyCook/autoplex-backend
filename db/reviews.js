@@ -4,14 +4,15 @@ async function createReview ({
   name,
   quote,
   imgAlt,
-  imgUrl
+  imgUrl,
+  isActive
 }) {
   try {
     const { rows: [ review ] } = await client.query(`
-      INSERT INTO reviews(name, quote, "imgAlt", "imgUrl")
-      VALUES($1, $2, $3, $4)
+      INSERT INTO reviews(name, quote, "imgAlt", "imgUrl", "isActive")
+      VALUES($1, $2, $3, $4, $5)
       RETURNING *;
-    `, [name, quote, imgAlt, imgUrl]);
+    `, [name, quote, imgAlt, imgUrl, isActive]);
 
     return review;
 
