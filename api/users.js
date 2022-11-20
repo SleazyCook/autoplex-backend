@@ -28,11 +28,9 @@ usersRouter.get('/',async(req,res,next)=>{
 
 usersRouter.use((req, res, next) => {
   console.log('A request is being made to /users');
-
   next();
 })
 
-console.log(11111111111111111111111111111111111111111111)
 usersRouter.post('/login', async (req, res, next) => {
   const {username, password} = req.body;
 
@@ -62,12 +60,9 @@ usersRouter.post('/login', async (req, res, next) => {
     next(error)
   }
 });
-console.log(22222222222222222222222222222222222222222222222)
 
 usersRouter.post('/register', async (req, res, next) => {
-  console.log('fuck me in my thunderclient');
   const { username, password } = req.body;
-  console.log(req.body)
 
   try{
 
