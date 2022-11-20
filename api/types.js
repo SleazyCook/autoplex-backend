@@ -8,25 +8,31 @@ const {
   getTypesById
 } = require('../db/types');
 
-typesRouter.get('/', async (req, res, next) => {
-  try {
-    const allTypes = await getAllTypes();
-
-    const types = allTypes.filter(type => {
-      if (types.active) {
-        return true;
-      } 
-
-      return false;
-
-    })
-  } catch (error) {
+// comment in for testing. comment out for deploy.
+typesRouter.get('/',async(req,res,next)=>{
+  try{
+    const types = await getAllTypes();
+    res.send({types})
+    next();
+    } catch(error){
     console.log(error);
   }
 });
 
 typesRouter.post('/', async (req, res, next) => {
   const { vehicleType } = req.body;
-})
+
+  try {
+    const type = await createType({
+      vehicleType
+    });
+
+    res.send({
+      message: "Type added"
+    })
+  } catch (error) {
+    next ({name, message})
+  }
+});
 
 module.exports = typesRouter;

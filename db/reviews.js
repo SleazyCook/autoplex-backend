@@ -41,16 +41,17 @@ async function updateReview(id, fields = {}) {
 
 async function getAllReviews() {
   try {
-    const { rows: reviewId } = await client.query(`
-      SELECT id
+    const { rows } = await client.query(`
+      SELECT id, name, quote, "imgAlt", "imgUrl", "isActive"
       FROM reviews;
     `);
 
-    const reviews = await Promise.all(reviewsId.map(
-      review => getReviewById( review.id )
-    ));
+    // const reviews = await Promise.all(reviewsId.map(
+    //   review => getReviewById( review.id )
+    // ));
 
     return reviews;
+
   } catch (error) {
     console.log(error);
   }

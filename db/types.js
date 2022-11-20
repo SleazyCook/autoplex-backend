@@ -38,16 +38,17 @@ async function updateType(id, fields = {}) {
 
 async function getAllTypes() {
   try{
-    const { rows: typeId } = await client.query(`
-      SELECT id
+    const { rows } = await client.query(`
+      SELECT id, "vehicleType"
       FROM types
     `);
 
-    const types = await Promise.all(typesId.map(
-      types => getTypesById( types.id )
-    ));
+    // const types = await Promise.all(typesId.map(
+    //   types => getTypesById( types.id )
+    // ));
 
-    return types;
+    return rows;
+
   } catch (error) {
     console.log(error);
   }

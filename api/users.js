@@ -7,15 +7,13 @@ const {JWT_SECRET} = process.env;
 // import users functions from database
 const {
   createUser,
-  updateUser,
   getAllUsers,
-  getUserById,
   getUserByUsername
 } = require('../db/users');
 
 const {} = require('../db'); //require funcitons from db
 
-// comment this out before deploy
+// comment in for testing. comment out for deploy.
 usersRouter.get('/',async(req,res,next)=>{
   try{
     const users = await getAllUsers();
