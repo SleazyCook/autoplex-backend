@@ -6,4 +6,6 @@ const {
   updatePhoto,
   getAllPhotos,
   getPhotoById
-} = require('../db')
+} = require('../db/photos')
+
+module.exports = photosRouter;

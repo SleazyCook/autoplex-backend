@@ -1,13 +1,13 @@
 const express = require('express');
 const vehiclesRouter = express.Router();
 
-const jwt = require('jsonwebtokn');
+const jwt = require('jsonwebtoken');
 const { 
   createVehicle,
   updateVehicle,
   getAllVehicles,
   getVehicleById
-} = require('.../db');
+} = require('../db/vehicles');
 
 vehiclesRouter.use((req, res, next) => {
   console.log('A request is being made to /vehicles');
@@ -22,3 +22,4 @@ vehiclesRouter.get('/', async (req, res) => {
   })
 });
 
+module.exports = vehiclesRouter;

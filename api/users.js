@@ -2,8 +2,7 @@ const express = require('express');
 const usersRouter = express.Router();
 
 const jwt = require('jsonwebtoken');
-const {JWT_SECRET} = process.emitWarning;
-require('dotenv').config();
+const {JWT_SECRET} = process.env;
 
 // import users functions from database
 const {
@@ -12,9 +11,20 @@ const {
   getAllUsers,
   getUserById,
   getUserByUsername
-} = require('../db');
+} = require('../db/users');
 
 const {} = require('../db'); //require funcitons from db
+
+// comment this out before deploy
+usersRouter.get('/',async(req,res,next)=>{
+  try{
+    const users = await getAllUsers();
+    res.send({users})
+    next();
+    } catch(error){
+    console.log(error);
+  }
+});
 
 usersRouter.use((req, res, next) => {
   console.log('A request is being made to /users');
@@ -22,14 +32,7 @@ usersRouter.use((req, res, next) => {
   next();
 })
 
-usersRouter.get('/', async(req, res) => {
-  const users = await getAllUsers();
-  console.log('where am i');
-  res.send({
-    users
-  });
-});
-
+console.log(11111111111111111111111111111111111111111111)
 usersRouter.post('/login', async (req, res, next) => {
   const {username, password} = req.body;
 
@@ -44,9 +47,9 @@ usersRouter.post('/login', async (req, res, next) => {
     const user = await getUserByUsername(username);
 
     if (user && user.password == password) {
-      const newToken = jwt.sign({
-        username: user
-      })
+      const newToken = jwt.sign({ username: username, id: user.id}
+        , JWT_SECRET,{
+          expiresIn:"1w"})
       res.send({ message: "you're logged in!", newToken });
     } else {
       next({
@@ -59,34 +62,34 @@ usersRouter.post('/login', async (req, res, next) => {
     next(error)
   }
 });
+console.log(22222222222222222222222222222222222222222222222)
 
 usersRouter.post('/register', async (req, res, next) => {
-  const { username, name } = req.body;
+  console.log('fuck me in my thunderclient');
+  const { username, password } = req.body;
+  console.log(req.body)
 
   try{
-    const _user = await getUserByUsername (username);
-
-    if (_user) {
-      next({
-        name: 'UserExistsError',
-        message: 'A user by that username already exists'
-      });
-    }
 
     const user = await createUser({
       username,
-      passoword
+      password
     });
 
     const token = jwt.sign({
       id: user.id,
       username
-    }, process.env.JWT_SECRET, {
+    }, JWT_SECRET, {
       expiresIn: '1w'
     });
+
+    res.send({
+      message: "Thank you for signing up",
+      token
+    })
   } catch ({ name, message }) {
     next ({name, message})
   }
 });
 
-module.exports = userRouter;
+module.exports = usersRouter;

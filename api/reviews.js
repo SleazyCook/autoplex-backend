@@ -6,4 +6,6 @@ const {
   updateReview,
   getAllReviews,
   getReviewById
-} = require('../db');
+} = require('../db/reviews');
+
+module.exports = reviewsRouter;

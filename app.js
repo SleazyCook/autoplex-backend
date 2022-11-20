@@ -3,6 +3,8 @@ const express = require('express');
 // morgan is a tool used to test success/fail on server
 const morgan = require('morgan')
 
+require('dotenv').config();
+
 // 2. create new Express server instance
 const app = express();
 
@@ -12,6 +14,10 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 const apiRouter = require('./api');
+app.use('/api', apiRouter);
+
+const { client } = require('./db');
+client.connect();
 
 // app.listen is always at the bottom. this boots up the server after all the other shit.
 const PORT = 3000;

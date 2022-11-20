@@ -5,34 +5,34 @@ const jwt = require('jsonwebtoken');
 const { getUserById } = require('../db');
 const {JWT_SECRET} = process.env;
 
-require('dotev').congif();
+require('dotenv').config();
 
 const {} = require('../db') //import functions from database
 
-apiRouter.use(async(req, res, next) => {
-  const prefix = "Bearer";
-  const auth = req.header('Authorization');
-  if(!auth){
-    res.send("Invalid Credentials");
-    next();
-  } else if (auth.startsWith(prefix)) {
-    const token = auth.slice(prefix.length);
-    try{
-      const {id} = jwt.verify(token, JWT_SECRET);
-      if(id){
-        req.user = await getUserById(id);
-        next();
-      }
-    } catch ({name, message}) {
-      next ({name, message});
-    }
-  } else {
-    next({
-      name: 'AuthorizationHeaderError',
-      message: 'Authorization token must start with ${prefix}'
-    })
-  }
-});
+// apiRouter.use(async(req, res, next) => {
+//   const prefix = "Bearer";
+//   const auth = req.header('Authorization');
+//   if(!auth){
+//     res.send("Invalid Credentials");
+//     next();
+//   } else if (auth.startsWith(prefix)) {
+//     const token = auth.slice(prefix.length);
+//     try{
+//       const {id} = jwt.verify(token, JWT_SECRET);
+//       if(id){
+//         req.user = await getUserById(id);
+//         next();
+//       }
+//     } catch ({name, message}) {
+//       next ({name, message});
+//     }
+//   } else {
+//     next({
+//       name: 'AuthorizationHeaderError',
+//       message: 'Authorization token must start with ${prefix}'
+//     })
+//   }
+// });
 
 apiRouter.use((req, res, next) => {
   if (req.user) {
@@ -59,10 +59,10 @@ apiRouter.use('/.photos', photosRouter);
 
 // reviews
 const reviewsRouter = require('./reviews');
-apitRouter.use('./reviews', reviewsRouter);
+apiRouter.use('./reviews', reviewsRouter);
 
 apiRouter.use((error, req, res, next) => {
-  res.sent(error);
+  res.send(error);
 });
 
 module.exports = apiRouter;
