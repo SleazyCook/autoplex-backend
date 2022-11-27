@@ -47,19 +47,19 @@ apiRouter.use('/users', usersRouter);
 
 // types
 const typesRouter = require('./types');
-apiRouter.use('./types', typesRouter);
+apiRouter.use('/types', typesRouter);
 
 // vehicles
 const vehiclesRouter = require('./vehicles');
-apiRouter.use('/tags', vehiclesRouter);
+apiRouter.use('/vehicles', vehiclesRouter);
 
 // photos
 const photosRouter = require('./photos');
-apiRouter.use('/.photos', photosRouter);
+apiRouter.use('/photos', photosRouter);
 
 // reviews
 const reviewsRouter = require('./reviews');
-apiRouter.use('./reviews', reviewsRouter);
+apiRouter.use('/reviews', reviewsRouter);
 
 apiRouter.use((error, req, res, next) => {
   res.send(error);

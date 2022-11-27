@@ -16,10 +16,49 @@ vehiclesRouter.use((req, res, next) => {
 })
 
 vehiclesRouter.get('/', async (req, res) => {
-  const vehicles = await getAllVehicles();
-  res.send({
-    vehicles
-  })
+  try {
+    const vehicles = await getAllVehicles();
+    res.send({vehicles})
+  } catch (error) {
+    console.log(error)
+  }
 });
+
+vehiclesRouter.post('/', async (req, res, next) => {
+  const {typeId, make, model, submodel, engine, year, exteriorColor, interiorColor, mileage, VIN, stockNumber, retailPrice, inStock, isFeatured, isActive} = req.body;
+
+  try{
+    const vehicle = await createVehicle({
+      typeId, make, model, submodel, engine, year, exteriorColor, interiorColor, mileage, VIN, stockNumber, retailPrice, inStock, isFeatured, isActive
+    });
+
+    res.send({
+      message: "Vehicle added",
+      vehicle: vehicle
+    })
+  } catch (error) {
+    console.log(error);
+  }
+})
+
+vehiclesRouter.patch('/', async (req, res, next) => {
+
+  const {id, typeId, make, model, submodel, engine, year, exteriorColor, interiorColor, mileage, VIN, stockNumber, retailPrice, inStock, isFeatured, isActive} = req.body;
+
+  console.log('wreck that body', req.body)
+  try{
+    const vehicle = await updateVehicle(id, fields = {
+      make
+    });
+
+    res.send({
+      message: "Vehicle updated",
+      vehicle: vehicle
+    })
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 
 module.exports = vehiclesRouter;

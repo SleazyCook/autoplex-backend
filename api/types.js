@@ -20,15 +20,16 @@ typesRouter.get('/',async(req,res,next)=>{
 });
 
 typesRouter.post('/', async (req, res, next) => {
-  const { vehicleType } = req.body;
-
+  const {vehicleType}  = req.body;
+  console.log(vehicleType)
   try {
-    const type = await createType({
+    console.log(vehicleType)
+    const type = await createType(
       vehicleType
-    });
+    );
 
     res.send({
-      message: "Type added"
+      message: "Type added", type: type
     })
   } catch (error) {
     next ({name, message})

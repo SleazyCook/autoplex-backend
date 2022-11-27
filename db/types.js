@@ -1,16 +1,17 @@
 const { client } = require('.');
 
-async function createType({
+async function createType(
   vehicleType,
-}) {
+) {
   try {
-    const { rows: [type] } = await client.query(`
+    const { rows: [vehicleType1] } = await client.query(`
     INSERT INTO types("vehicleType")
     VALUES ($1)
+    ON CONFLICT ("vehicleType") DO NOTHING
     RETURNING *;
   `, [vehicleType]);
 
-    return type;
+    return vehicleType1;
     
   } catch (error) {
     console.log(error);
@@ -18,9 +19,9 @@ async function createType({
 }
 
 async function updateType(id, fields = {}) {
-  const setString = Object.keys(fields).map(
-    (key, index) => `"${ key }"=$${ index + 1}`
-  ).join(', ');
+  // const setString = Object.keys(fields).map(
+  //   (key, index) => `"${ key }"=$${ index + 1}`
+  // ).join(', ');
 
   try {
     const {rows: [ typeId ] } = await client.query(`

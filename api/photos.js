@@ -8,4 +8,26 @@ const {
   getPhotoById
 } = require('../db/photos')
 
+// comment in for testing. comment out for deploy.
+photosRouter.get('/',async(req,res,next)=>{
+  try{
+    const photos = await getAllPhotos();
+    res.send({photos})
+    next();
+    } catch(error){
+    console.log(error);
+  }
+});
+
+photosRouter.use((req, res, next) =>  {
+  console.log('A request is being made to /photos');
+  next();
+})
+
+
+photosRouter.post('/post-photo', async (req, res, next) => {
+  const { vehicleId, alt, url, isActive} = req.body;
+
+})
+
 module.exports = photosRouter;
