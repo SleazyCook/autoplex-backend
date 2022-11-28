@@ -39,17 +39,15 @@ vehiclesRouter.post('/', async (req, res, next) => {
   } catch (error) {
     console.log(error);
   }
-})
+});
 
+// layered object, pass id, then fields
 vehiclesRouter.patch('/', async (req, res, next) => {
 
-  const {id, typeId, make, model, submodel, engine, year, exteriorColor, interiorColor, mileage, VIN, stockNumber, retailPrice, inStock, isFeatured, isActive} = req.body;
+  const {id, fields} = req.body;
 
-  console.log('wreck that body', req.body)
   try{
-    const vehicle = await updateVehicle(id, fields = {
-      make
-    });
+    const vehicle = await updateVehicle(id, fields);
 
     res.send({
       message: "Vehicle updated",
