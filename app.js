@@ -1,5 +1,6 @@
 // 1. import express
 const express = require('express');
+const cors = require('cors');
 // morgan is a tool used to test success/fail on server
 const morgan = require('morgan')
 
@@ -7,6 +8,9 @@ require('dotenv').config();
 
 // 2. create new Express server instance
 const app = express();
+
+
+app.use(cors())
 
 // use morgan before calling ANY paths in order to properly test everything
 app.use(morgan('dev'));
