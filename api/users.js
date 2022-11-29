@@ -55,7 +55,8 @@ usersRouter.post('/login', async (req, res, next) => {
     } 
   } catch (error) {
     console.log (error);
-    next(error)
+    res.send({error: error.message})
+    // next(error)
   }
 });
 
