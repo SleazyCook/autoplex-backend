@@ -20,6 +20,7 @@ const {
   createVehicle,
   updateVehicle,
   getAllVehicles,
+  getVehiclesByActive,
   getVehicleById
 } = require('./vehicles')
 
@@ -209,7 +210,7 @@ async function createInitialPhotos() {
 }
 
 async function testDB() {
-  // await updateVehicle(1, {year: 2020, active: false});
+  await updateVehicle(1, {year: 2020, isActive: false});
   await getVehicleById(1);
 }
 

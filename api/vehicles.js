@@ -6,6 +6,7 @@ const {
   createVehicle,
   updateVehicle,
   getAllVehicles,
+  getVehiclesByActive,
   getVehicleById
 } = require('../db/vehicles');
 
@@ -17,12 +18,22 @@ vehiclesRouter.use((req, res, next) => {
 
 vehiclesRouter.get('/', async (req, res) => {
   try {
-    const vehicles = await getAllVehicles();
+    const vehicles = await getVehiclesByActive();
     res.send({vehicles})
   } catch (error) {
     console.log(error)
   }
 });
+
+vehiclesRouter.get('/:id', async (req, res) => {
+  try {
+    const {id} = req.params
+    const vehicle = await getVehicleById(id);
+    res.send(vehicle)
+  } catch(error) {
+    console.log(error)
+  }
+})
 
 vehiclesRouter.post('/', async (req, res, next) => {
   const {typeId, make, model, submodel, engine, year, exteriorColor, interiorColor, mileage, VIN, stockNumber, retailPrice, inStock, isFeatured, isActive} = req.body;

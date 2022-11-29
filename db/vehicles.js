@@ -34,18 +34,24 @@ async function createVehicle({
 // MATERIALIZE UI - carousel photos, or MUI
 
 async function updateVehicle(id, fields = {}) {
-  const setString = Object.keys(fields).map(
+  const keys = Object.keys(fields)
+  const values = Object.values(fields)
+  if (keys.length == 0) return false;
+
+  const setString = keys.map(
     (key, index) => `"${ key }"=$${ index + 1}`
   ).join(', ');
 
   try{
-    const { rows: [ vehicle ] } = await client.query(`
+    // const { rows: [ vehicle ] } = await client.query(`
+    const data = await client.query(`
       UPDATE vehicles SET ${ setString }
-      WHERE id=${ id } RETURNING *;`
-      , Object.values(fields));
+      WHERE id=$${ keys.length + 1 } RETURNING *;`
+      , [...values, id]);
       
-      console.log("Result:", vehicle);
-    return vehicle;
+      // console.log("Result:", vehicle);
+      console.log("Result:", data);
+    return data;
   } catch (error) {
     console.log(error)
   }
@@ -53,14 +59,14 @@ async function updateVehicle(id, fields = {}) {
 
 async function getAllVehicles() {
   try {
-    const { rows: vehicleId } = await client.query(`
-      SELECT id
+    const { rows: vehicles } = await client.query(`
+      SELECT *
       FROM vehicles;
     `);
 
-    const vehicles = await Promise.all(vehicleId.map(
-      vehicle => getVehicleById( vehicle.id )
-    ));
+    // const vehicles = await Promise.all(vehicleId.map(
+    //   vehicle => getVehicleById( vehicle.id )
+    // ));
 
     return vehicles;
   } catch (error) {
@@ -68,12 +74,26 @@ async function getAllVehicles() {
   }
 }
 
+async function getVehiclesByActive() {
+  try {
+    const { rows: vehicles } = await client.query(`
+      SELECT *
+      FROM vehicles
+      WHERE "isActive" = true;
+    `);
+
+    return vehicles;
+  } catch(error) {
+    console.log(error);
+  }
+};
+
 async function getVehicleById(vehicleId) {
   try {
     const { rows: [ vehicles ] } = await client.query(`
     SELECT *
     FROM vehicles
-    WHERE id=$1
+    WHERE id=$1;
   `, [vehicleId]);
 
     if (!vehicles) {
@@ -93,5 +113,6 @@ module.exports = {
   createVehicle,
   updateVehicle,
   getAllVehicles,
+  getVehiclesByActive,
   getVehicleById
 }
