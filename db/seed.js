@@ -173,7 +173,7 @@ async function createInitialVehicles(){
       retailPrice: '$4,000',
       inStock: true,
       isFeatured: false,
-      isActive: false
+      isActive: true
     })
     console.log(drewCar)
     console.log(ianCar)
@@ -210,7 +210,7 @@ async function createInitialPhotos() {
 }
 
 async function testDB() {
-  await updateVehicle(1, {year: 2020, isActive: false});
+  await updateVehicle(1, {year: 2020});
   await getVehicleById(1);
 }
 
