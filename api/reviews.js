@@ -19,6 +19,16 @@ reviewsRouter.get('/', async (req, res, next)=>{
   }
 });
 
+reviewsRouter.get('/:id', async (req, res) => {
+  try {
+    const {id} = req.params
+    const review = await getReviewById(id);
+    res.send(review)
+  } catch(error) {
+    console.log(error)
+  }
+})
+
 reviewsRouter.post('/', async (req, res, next) => {
   const {name, quote, imgAlt, imgUrl, isActive} = req.body;
 

@@ -24,6 +24,16 @@ photosRouter.get('/',async(req,res,next)=>{
   }
 });
 
+photosRouter.get('/:id', async (req, res) => {
+  try {
+    const {id} = req.params
+    const photo = await getPhotoById(id);
+    res.send(photo)
+  } catch(error) {
+    console.log(error)
+  }
+})
+
 photosRouter.post('/', async (req, res, next) => {
   const { vehicleId, alt, url, isActive} = req.body;
 

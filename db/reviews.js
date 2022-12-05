@@ -59,20 +59,20 @@ async function getAllReviews() {
 
 async function getReviewById(reviewId) {
   try {
-    const { rows: [ reviews ] } = await client.query(`
+    const { rows: [ review ] } = await client.query(`
       SELECT * 
       FROM reviews
       WHERE id=$1
     `, [reviewId]);
 
-    if (!reviews) {
+    if (!review) {
       throw {
         name: "ReviewNotFoundError",
         message: "Could not find a review with that reviewId"
       };
     }
-    console.log('reviews get by id', reviews)
-    return reviews;
+    console.log('reviews get by id', review)
+    return review;
   } catch (error) {
     console.log(error);
   }

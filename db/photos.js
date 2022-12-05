@@ -2,20 +2,20 @@ const { client } = require('.');
 
 async function getPhotoById(photoId) {
   try {
-    const { rows: [ photos ] } = await client.query(`
+    const { rows: [ photo ] } = await client.query(`
       SELECT *
       FROM photos
       WHERE id=$1
     `, [photoId]);
 
-    if (!photos) {
+    if (!photo) {
       throw {
         name: "PhotoNotFoundError",
         message: "Could not find a photo with that photoId"
       };
     }
-    console.log('photos get by id', photos)
-    return photos;
+    console.log('photos get by id', photo)
+    return photo;
   } catch (error) {
     console.log(error);
   }
