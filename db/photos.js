@@ -5,7 +5,8 @@ async function getPhotoById(photoId) {
     const { rows: [ photo ] } = await client.query(`
       SELECT *
       FROM photos
-      WHERE id=$1
+      WHERE id=$1 
+      AND "isActive" = true;
     `, [photoId]);
 
     if (!photo) {
@@ -37,6 +38,20 @@ async function getAllPhotos() {
     console.log(error);
   }
 }
+
+async function getPhotosByActive() {
+  try {
+    const { rows: photos } = await client.query(`
+      SELECT *
+      FROM photos
+      WHERE "isActive" = true;
+    `);
+
+    return photos;
+  } catch(error) {
+    console.log(error);
+  }
+};
 
 async function createPhoto({
   vehicleId,
@@ -74,9 +89,25 @@ async function updatePhoto(id, fields = {}) {
   }
 }
 
+async function deletePhoto(id) {
+  try {
+    const { rows: [ photo ] } = await client.query(`
+    UPDATE photos SET "isActive"=false
+    WHERE id=${ id } RETURNING *;`)
+
+    console.log("Photo Delete Result", photo.isActive)
+    return photo;
+   
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 module.exports = {
   createPhoto,
   updatePhoto,
   getAllPhotos,
-  getPhotoById
+  getPhotosByActive,
+  getPhotoById,
+  deletePhoto
 }
