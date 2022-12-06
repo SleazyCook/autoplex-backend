@@ -5,6 +5,7 @@ const {
   createPhoto,
   updatePhoto,
   getAllPhotos,
+  getPhotosByActive,
   getPhotoById,
   deletePhoto
 } = require('../db/photos')
@@ -17,7 +18,7 @@ photosRouter.use((req, res, next) =>  {
 // comment in for testing. comment out for deploy.
 photosRouter.get('/',async(req,res,next)=>{
   try{
-    const photos = await getAllPhotosByActive();
+    const photos = await getPhotosByActive();
     res.send(photos)
     next();
     } catch(error){
